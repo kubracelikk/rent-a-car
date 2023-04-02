@@ -21,8 +21,8 @@ public class Model {
     private String name;
     @ManyToOne
     //@JsonManagedReference
-    @JoinColumn(name = "brand_id")
-    private Brand brand; //modelin bir tane markası olabilir
+    @JoinColumn(name = "brand_id") //foreignkey
+    private Brand brand; //modelinbirtanemarkasıolabilir
     @OneToMany(mappedBy = "model")
    //@JsonBackReference
     private List<Car> cars;
