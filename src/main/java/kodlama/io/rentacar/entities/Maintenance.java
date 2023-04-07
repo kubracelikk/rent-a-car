@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -18,9 +18,11 @@ public class Maintenance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate sentDate;
-    private LocalDate returnDate;
-    private String description;
+    private LocalDateTime sentDate;
+    private LocalDateTime returnDate;
+    private String information;
+    private boolean isCompleted;
+
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
