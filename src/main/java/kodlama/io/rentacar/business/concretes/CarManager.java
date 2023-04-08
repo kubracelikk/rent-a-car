@@ -23,8 +23,8 @@ public class CarManager implements CarService {
 
 
     @Override
-    public List<GetAllCarsResponse> getAll() {
-        List<Car> cars = repository.findAll();
+    public List<GetAllCarsResponse> getAll(boolean includeMaintenance) {
+      List<Car> cars = filterCarsByMaintenanceState(includeMaintenance);
         List<GetAllCarsResponse> response = cars
                 .stream()
                 .map(car -> mapper.map(car, GetAllCarsResponse.class))
@@ -64,5 +64,20 @@ public class CarManager implements CarService {
     @Override
     public void delete(int id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public void changeState(int carId, State state) {
+        Car car = repository.findById(carId).orElseThrow();
+           car.setState(state);
+           repository.save(car);
+
+    }
+
+    private List<Car> filterCarsByMaintenanceState(boolean includeMaintenance) {
+        if(includeMaintenance) {
+            return repository.findAll();
+        }
+        return repository.findAllByStateIsNot(State.MAINTENANCE);
     }
 }

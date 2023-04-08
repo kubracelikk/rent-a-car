@@ -12,6 +12,6 @@ import lombok.Setter;
 public class CreateMaintenanceRequest {
     //private LocalDate sentDate;
     //private LocalDate returnDate;
-    private String description;
+    private String information;
     private int carId;
 }
