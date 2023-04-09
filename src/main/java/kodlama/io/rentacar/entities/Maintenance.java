@@ -21,7 +21,10 @@ public class Maintenance {
     private LocalDateTime sentDate;
     private LocalDateTime returnDate;
     private String information;
-    private boolean isCompleted;
+
+    // @NotNull
+    // @Column(name = "isCompleted")
+    private boolean isCompleted; // =false
 
     @ManyToOne
     @JoinColumn(name = "car_id")
