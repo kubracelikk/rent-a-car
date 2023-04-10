@@ -37,6 +37,7 @@ public class MaintenanceManager implements MaintenanceService {
 
     @Override
     public GetMaintenanceResponse getById(int id) {
+        checkIfMaintenanceExists(id);
         Maintenance maintenance = repository.findById(id).orElseThrow(); //Varsa al,yoksa exception fırlat
         GetMaintenanceResponse response = mapper.map(maintenance, GetMaintenanceResponse.class);
         return response;
@@ -74,6 +75,7 @@ public class MaintenanceManager implements MaintenanceService {
 
     @Override
     public UpdateMaintenanceResponse update(int id, UpdateMaintenanceRequest request) {
+        checkIfMaintenanceExists(id);
         Maintenance maintenance = mapper.map(request, Maintenance.class);
         maintenance.setId(id);
         repository.save(maintenance);
@@ -84,8 +86,13 @@ public class MaintenanceManager implements MaintenanceService {
 
     @Override
     public void delete(int id) {
+        checkIfMaintenanceExists(id);
+        makeCarAvailableIfIsCompletedFalse(id);
         repository.deleteById(id);
+    }
 
+    private void checkIfMaintenanceExists(int id) {
+        if (!repository.existsById(id)) throw new RuntimeException("Böyle bir bakım bilgisine ulaşılamadı!");
     }
 
     private void chechkIfCarUnderMaintenance(int carId) {
@@ -105,7 +112,12 @@ public class MaintenanceManager implements MaintenanceService {
             throw new RuntimeException("Araç kirada olduğu için bakıma alınamaz!");
         }
     }
-
+    private void makeCarAvailableIfIsCompletedFalse(int id) {
+        int carId = repository.findById(id).get().getCar().getId();
+        if(repository.existsByCarIdAndIsCompletedFalse(carId)) {
+            carService.changeState(carId,State.AVAILABLE);
+        }
+    }
 
     /*private void checkIfCarCanBeSentToMaintenance(Car car) {
         checkIfCarInMaintenance(car);
