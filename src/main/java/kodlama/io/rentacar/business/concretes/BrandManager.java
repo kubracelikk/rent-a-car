@@ -75,6 +75,5 @@ public class BrandManager implements BrandService {
 
     private void checkIfBrandExists(int id) {
         if (!repository.existsById(id)) throw new RuntimeException("Marka bulunamadı!");
-
     }
 }
