@@ -22,9 +22,9 @@ public class Maintenance {
     private LocalDateTime returnDate;
     private String information;
 
-    // @NotNull
-    // @Column(name = "isCompleted")
-    private boolean isCompleted; // =false
+    //@NotNull
+    //@Column(name = "isCompleted")
+    private boolean isCompleted; //=false
 
     @ManyToOne
     @JoinColumn(name = "car_id")

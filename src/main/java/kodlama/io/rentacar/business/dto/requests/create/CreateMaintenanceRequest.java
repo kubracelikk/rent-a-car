@@ -10,8 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateMaintenanceRequest {
-    //private LocalDate sentDate;
-    //private LocalDate returnDate;
     private String information;
     private int carId;
 }
