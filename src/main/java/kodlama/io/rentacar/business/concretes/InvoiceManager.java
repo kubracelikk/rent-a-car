@@ -32,7 +32,6 @@ public class InvoiceManager implements InvoiceService {
                 .toList();
 
         return response;
-
     }
 
     @Override
@@ -42,7 +41,6 @@ public class InvoiceManager implements InvoiceService {
         GetInvoiceResponse response = mapper.map(invoice, GetInvoiceResponse.class);
 
         return response;
-
     }
 
     @Override

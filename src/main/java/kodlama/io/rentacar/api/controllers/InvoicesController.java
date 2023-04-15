@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/invoices")
 public class InvoicesController {
     private final InvoiceService service;
+
     @GetMapping
     public List<GetAllInvoicesResponse> getAll() {
         return service.getAll();
