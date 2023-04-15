@@ -1,12 +1,15 @@
 package kodlama.io.rentacar.business.concretes;
 
 import kodlama.io.rentacar.business.abstracts.CarService;
+import kodlama.io.rentacar.business.abstracts.InvoiceService;
 import kodlama.io.rentacar.business.abstracts.PaymentService;
 import kodlama.io.rentacar.business.abstracts.RentalService;
+import kodlama.io.rentacar.business.dto.requests.create.CreateInvoiceRequest;
 import kodlama.io.rentacar.business.dto.requests.create.CreateRentalRequest;
 import kodlama.io.rentacar.business.dto.requests.update.UpdateRentalRequest;
 import kodlama.io.rentacar.business.dto.responses.create.CreateRentalResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllRentalsResponse;
+import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetRentalResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateRentalResponse;
 import kodlama.io.rentacar.common.dto.CreateRentalPaymentRequest;
@@ -27,6 +30,7 @@ public class RentalManager implements RentalService {
     private final ModelMapper mapper;
     private final CarService carService;
     private final PaymentService paymentService;
+    private final InvoiceService invoiceService;
 
 
     @Override
@@ -58,6 +62,7 @@ public class RentalManager implements RentalService {
         rental.setTotalPrice(getTotalPrice(rental));
         rental.setStartDate(LocalDateTime.now());
 
+        //payment
         CreateRentalPaymentRequest paymentRequest = new CreateRentalPaymentRequest();
         mapper.map(request.getPaymentRequest(), paymentRequest);
         paymentRequest.setPrice(getTotalPrice(rental));
@@ -66,6 +71,11 @@ public class RentalManager implements RentalService {
         repository.save(rental);
         carService.changeState(rental.getCar().getId(), State.RENTED);
         CreateRentalResponse response = mapper.map(rental, CreateRentalResponse.class);
+
+        //invoice
+        CreateInvoiceRequest invoiceRequest = new CreateInvoiceRequest();
+        createInvoiceRequest(request,invoiceRequest,rental);
+        invoiceService.add(invoiceRequest);
 
         return response;
     }
@@ -88,21 +98,47 @@ public class RentalManager implements RentalService {
         checkIfRentalExists(id);
         int carId = repository.findById(id).get().getCar().getId();
         carService.changeState(carId, State.AVAILABLE);
+        //invoiceService.deleteByRentalId(id);
         repository.deleteById(id);
 
     }
+
     private double getTotalPrice(Rental rental) {
         return rental.getDailyPrice() * rental.getRentedForDays();
     }
+
     private void checkIfRentalExists(int id) {
-        if(!repository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new RuntimeException("Kiralama bilgisine ulaşılamadı");
         }
     }
 
     private void checkIfCarAvailable(int carId) {
-        if(!carService.getById(carId).getState().equals(State.AVAILABLE)) {
+        if (!carService.getById(carId).getState().equals(State.AVAILABLE)) {
             throw new RuntimeException("Araç müsait değil");
         }
+    }
+
+    private void createInvoiceRequest(CreateRentalRequest request, CreateInvoiceRequest invoiceRequest, Rental rental) {
+        GetCarResponse car = carService.getById(request.getCarId());
+
+        invoiceRequest.setRentedAt(rental.getStartDate());
+        invoiceRequest.setModelName(car.getModelName());
+        invoiceRequest.setBrandName(car.getModelBrandName());
+        invoiceRequest.setDailyPrice(request.getDailyPrice());
+        invoiceRequest.setRentedForDays(request.getRentedForDays());
+        invoiceRequest.setCardHolder(request.getPaymentRequest().getCardHolder());
+        invoiceRequest.setPlate(car.getPlate());
+        invoiceRequest.setModelYear(car.getModelYear());
+
+
+
+        /* invoiceRequest.setModelName(carService.getById(request.getCarId()).getModelName());
+        invoiceRequest.setBrandName(carService.getById(request.getCarId()).getModelBrandName());
+        invoiceRequest.setDailyPrice(request.getDailyPrice());
+        invoiceRequest.setRentedForDays(request.getRentedForDays());
+        invoiceRequest.setCardHolder(paymentRequest.getCardHolder());
+        invoiceRequest.setPlate(carService.getById(request.getCarId()).getPlate());
+        invoiceRequest.setModelYear(carService.getById(request.getCarId()).getModelYear()); */
     }
 }
