@@ -37,7 +37,7 @@ public class MaintenancesController {
     }
 
     @PutMapping("/return")
-    public GetMaintenanceResponse returnCarFromMaintenance (@RequestParam int carId) {
+    public GetMaintenanceResponse returnCarFromMaintenance(@RequestParam int carId) {
         return service.returnCarFromMaintenance(carId);
     }
 

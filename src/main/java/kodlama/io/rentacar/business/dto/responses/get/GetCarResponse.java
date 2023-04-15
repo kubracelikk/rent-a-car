@@ -17,6 +17,8 @@ public class GetCarResponse {
     private double dailyPrice;
     private State state ;
     private int modelId;
+    private String modelName; //invoice
+    private String modelBrandName; //invoice
 
 
 }
