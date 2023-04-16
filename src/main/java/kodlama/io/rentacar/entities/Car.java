@@ -27,9 +27,9 @@ public class Car {
     @ManyToOne
     //@JsonManagedReference
     private Model model;
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Maintenance> maintenances;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Rental> rentals;
 }

@@ -24,7 +24,7 @@ public class Model {
     @JoinColumn(name = "brand_id") //foreignkey
     private Brand brand; //modelinbirtanemarkasıolabilir
     @OneToMany(mappedBy = "model")
-   //@JsonBackReference
+    //@JsonBackReference
     private List<Car> cars;
 
 }

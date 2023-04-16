@@ -15,7 +15,7 @@ public class GetCarResponse {
     private int modelYear;
     private String plate;
     private double dailyPrice;
-    private State state ;
+    private State state;
     private int modelId;
     private String modelName; //invoice
     private String modelBrandName; //invoice

@@ -13,14 +13,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name= "brands")
+@Table(name = "brands")
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     @OneToMany(mappedBy = "brand") //ilişkisahibiolmayantarafıgösterir
-   //@JsonBackReference
+    //@JsonBackReference
     private List<Model> models;
 
 

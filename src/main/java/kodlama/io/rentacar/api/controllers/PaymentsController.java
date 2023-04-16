@@ -36,13 +36,13 @@ public class PaymentsController {
 
     @PutMapping("/{id}")
     public UpdatePaymentResponse update(@PathVariable int id, @Valid @RequestBody UpdatePaymentRequest request) {
-        return service.update(id,request);
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
-        public void delete(@PathVariable int id) {
-            service.delete(id);
-        }
+    public void delete(@PathVariable int id) {
+        service.delete(id);
     }
+}
 
 

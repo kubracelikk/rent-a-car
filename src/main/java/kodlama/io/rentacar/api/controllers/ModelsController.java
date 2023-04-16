@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/models")
 public class ModelsController {
     private final ModelService service;
+
     @GetMapping
     public List<GetAllModelsResponse> getAll() {
         return service.getAll();

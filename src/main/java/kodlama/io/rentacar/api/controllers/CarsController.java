@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("/api/cars")
 public class CarsController {
     private final CarService service;
+
     @GetMapping
     public List<GetAllCarsResponse> getAll(@RequestParam(defaultValue = "true") boolean includeMaintenance) {
         return service.getAll(includeMaintenance);

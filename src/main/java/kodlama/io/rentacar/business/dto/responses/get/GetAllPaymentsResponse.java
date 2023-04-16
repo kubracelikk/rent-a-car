@@ -10,12 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetAllPaymentsResponse {
-        private int id;
-        private String cardNumber;
-        private String cardHolder;
-        private int cardExpirationYear;
-        private int cardExpirationMonth;
-        private String cardCvv;
-        private double balance;
+    private int id;
+    private String cardNumber;
+    private String cardHolder;
+    private int cardExpirationYear;
+    private int cardExpirationMonth;
+    private String cardCvv;
+    private double balance;
 }
 
