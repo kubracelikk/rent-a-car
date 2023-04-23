@@ -3,7 +3,6 @@ package kodlama.io.rentacar.business.dto.requests;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +21,15 @@ public class PaymentRequest { //baseclass
     @NotBlank
     @Length(min = 5)
     private String cardHolder;
-    @NotNull //sayısaldeğ
-    @Min(value = 2023)
+
+    //@NotNull //sayısaldeğ
+    @Min(value = 2023) //min boş değer girip girm. de kontrol ediyor
     private int cardExpirationYear;
-    @NotNull
+
     @Max(value = 12)
     @Min(value = 1)
     private int cardExpirationMonth;
-    @NotBlank
+    @NotBlank //@NotNull ekleyebiliriz çünkü referans tip
     @Length(min = 3, max = 3)
     private String cardCvv;
 }
